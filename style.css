@@ -1,0 +1,89 @@
+/* body */
+body{
+    background-color: #40474f;
+    font-family: "Arial, Helvetica, sans-serif";
+}
+
+.header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px; 
+    color: #BABABA; 
+}
+.subtabs {
+    margin-right: 20px; 
+    justify-content: space-between;
+}
+.find{
+    background-color: #40474f;
+    border: none;
+    font-size: 20px;
+}
+.subtabs:last-child {
+    margin-right: 100px;
+}
+.logo-container {
+    display: flex; 
+    align-items: center; 
+}
+.logo-container .logo {
+    height: 60px;
+}
+.subclass {
+    margin-left: 15px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+}
+
+.sign-in-btn {
+    padding: 5px 15px;
+    background-color: #6f989b;
+    color: #000000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/* footer max */
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: lightgrey;
+	text-align: center;
+	padding: 7px;
+}
+footer a {
+	text-decoration: none;
+	color: black;
+}
+/* frame( place for post just like twitter feed) */
+.frame {
+    background-color: #262421;
+    padding: 20px;
+    margin: 30px auto; 
+    width: 60%; 
+    color: #BABABA;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+}
+
+.frame h3 {
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 20px; /* Space after the title */
+    padding: 0;
+}
