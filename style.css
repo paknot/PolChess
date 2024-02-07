@@ -1,53 +1,80 @@
 /* body */
-body{
+body {
     background-color: #40474f;
     font-family: "Arial, Helvetica, sans-serif";
 }
 
 .header {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 10px; 
-    color: #BABABA; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: #BABABA;
 }
-.subtabs {
-    margin-right: 20px; 
+/* name and logo */
+.logo-container {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
 }
-.find{
-    background-color: #40474f;
-    border: none;
-    font-size: 20px;
-}
-.subtabs:last-child {
-    margin-right: 100px;
-}
-.logo-container {
-    display: flex; 
-    align-items: center; 
-}
+
 .logo-container .logo {
     height: 60px;
 }
-.subclass {
+/* subclasses */
+.subclass{
     margin-left: 15px;
 }
-
+/* Main search container */
 .search-container {
+    position: relative;
     display: flex;
     align-items: center;
+    justify-content: flex-end; 
+    flex-grow: 1; 
+    max-width: 220px; 
 }
-
-.search-bar {
-    padding: 5px;
+/* Magnifying glass */
+#searchButton {
+    transition: all 0.5s ease;
+    z-index: 2; 
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
     margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: white;
-    color: black;
+}
+#searchButton :hover{
+    color:#BBBBBB;
+}
+/* input for searching users */
+#searchInput {
+    position: absolute;
+    width: 100vh;
+    right: 90px;
+    transition: all 0.5s ease;
+    opacity: 0;
+    visibility: hidden;
+    border: none;
+    padding: -50px;
+    color: white;
+    background-color: transparent;
+    margin: 30px;
 }
 
+
+/* when active slide to left and reveal */
+.search-container.active #searchButton {
+    transform: translateX(-190px); 
+    padding: 20px;
+}
+/* open up the input */
+.search-container.active #searchInput {
+    width: 170px; 
+    opacity: 1;
+    visibility: visible;
+    z-index: 1;
+}
+/* sign in button */
 .sign-in-btn {
     padding: 5px 15px;
     background-color: #6f989b;
@@ -56,34 +83,162 @@ body{
     border-radius: 4px;
     cursor: pointer;
 }
+/* Setting gear */
+.settings{
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-size:30px;
+    transition: color 0.3s ease;
+    
+}
+.settings:hover{
+     color: #BABABA;
+}
+/* Gear spin */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 2s;
+}
+/* container for all setting */
+.settings-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+  }
+  /* color Menu */
+#colorMenu {
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    border: none;
+    padding: 5px;
+    display: none;
+    background-color: #373D43;
+    align-items: center; 
+    justify-content: center;
+    text-align: center;
+}
+/* Color options */
+#standard{
+    width: 100%;
+    border:none;
+    background-color: #40474f;
+    border-radius: 5px;
+}
+#blue{
+    width: 100%;
+    border:none;
+    background-color: #003268;
+    border-radius: 5px;
+}
+#green{
+    width: 100%;
+    border:none;
+    background-color: #1E5531;
+    border-radius: 5px;
+}
+#violet{
+    width: 100%;
+    border:none;
+    background-color: #36005A;
+    border-radius: 5px;
+}
+/* Pieces jumping */
+@keyframes jump {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.piece {
+    cursor: pointer;
+    display: inline-block; 
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+
+.piece:active {
+    animation: jump 0.8s ease;
+}
+/* Knight animation */
+@keyframes knight-move {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(20px, -40px); /* about 2 up 1 right*/
+    }
+}
+
+.knight {
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+}
+
+.knight:active {
+    animation: knight-move 0.7s ease;
+}
+/* bishop animation */
+@keyframes bishop-move {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(40px, -40px); /* */
+    }
+}
+
+.bishop {
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+}
+
+.bishop:active {
+    animation: bishop-move 0.7s ease;
+}
+
 /* footer max */
 footer {
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	background-color: lightgrey;
-	text-align: center;
-	padding: 7px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: lightgrey;
+    text-align: center;
+    padding: 7px;
 }
+
 footer a {
-	text-decoration: none;
-	color: black;
+    text-decoration: none;
+    color: black;
 }
+
 /* frame( place for post just like twitter feed) */
+/* going to be replaced with dynamicly alocated ones in teh future */
 .frame {
     background-color: #262421;
     padding: 20px;
-    margin: 30px auto; 
-    width: 60%; 
+    margin: 30px auto;
+    width: 60%;
     color: #BABABA;
     text-align: center;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .frame h3 {
     font-size: 30px;
     margin-top: 0;
-    margin-bottom: 20px; /* Space after the title */
+    margin-bottom: 20px;
     padding: 0;
 }

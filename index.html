@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +8,12 @@
     <meta name="description" content="chess site">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="polchess.png" />
+    <script src="front.js"></script>
     <!--For icons-->
     <script src="https://kit.fontawesome.com/eceeda5593.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
     <header>
         <div class="header">
@@ -20,23 +23,50 @@
                 <span class="subclass">Play</span>
                 <span class="subclass">Puzzles</span>
             </div>
-            
+            <p>
+                <span class="piece">♚</span>
+                <span class="piece">♛</span>
+                <span class="piece">♜</span>
+                <span class="bishop">♝</span>
+                <span class="knight">♞</span>
+                <span class="piece">♟</span>
+                <span class="piece">♔</span>
+                <span class="piece">♕</span>
+                <span class="piece">♖</span>
+                <span class="bishop">♗</span>
+                <span class="knight">♘</span>
+                <span class="piece">♙</span>
+            </p>
+
+
             <div class="search-container">
-                <button class="find">
+                <button id="searchButton">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
+                <input type="text" id="searchInput" placeholder="Search">
                 <button class="sign-in-btn">Sign in </button>
+                <div class="settings-container">
+                    <button class="settings">⚙</button>
+                    <div id="colorMenu" style="display:none;">
+                        <p> Choose background color</p>
+                        
+                        <button id="standard" onclick="changeBackgroundColor('#40474f')">Standard</button>
+                        <button id="blue" onclick="changeBackgroundColor('#003268')">Dark Blue</button>
+                        <button id="green" onclick="changeBackgroundColor('#1E5531')">Green</button> 
+                        <button id="violet" onclick="changeBackgroundColor('#36005A')">Violet</button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
     <main>
-        
+
         <div class="frame">
             <h3>Place</h3>
-            
+
         </div>
-            
-        
+
+
     </main>
     <footer>
         <a href="https://github.com/paknot" target="_blank">
@@ -57,4 +87,5 @@
         </a>
     </footer>
 </body>
+
 </html>
