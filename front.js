@@ -56,3 +56,37 @@ document.addEventListener('click', function(event) {
   }
 });
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Previous code for search animation and background color change here
+
+    // Redirect to login page
+    const signInButton = document.querySelector('.sign-in-btn'); // Make sure this class matches your "Sign in" button
+    if (signInButton) {
+        signInButton.addEventListener('click', function() {
+            window.location.href = '/M00864763/login';
+        });
+    }
+    function loadLoginForm() {
+        document.getElementById('main-content').innerHTML = `
+          <div class="login-form">
+            <h2>Sign in</h2>
+            <form id="loginForm">
+              <input type="text" id="username" placeholder="User name or email">
+              <input type="password" id="password" placeholder="Password">
+              <input type="submit" value="SIGN IN">
+              <div class="alternative-actions">
+                <a href="#">Register</a>
+                <a href="#">Password reset</a>
+                <a href="#">Log in by email</a>
+              </div>
+            </form>
+          </div>
+        `;
+    }
+    // Load the login form if on the login page
+    if (window.location.pathname === '/M00864763/login') {
+        loadLoginForm();
+    } else {
+        console.log("Error max");
+    }
+});

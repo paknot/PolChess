@@ -6,9 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Polchess</title>
     <meta name="description" content="chess site">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="polchess.png" />
-    <script src="front.js"></script>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/front.js"></script>
+
+    <link rel="icon" type="image/png" href="/polchess.png" />
     <!--For icons-->
     <script src="https://kit.fontawesome.com/eceeda5593.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -18,7 +19,7 @@
     <header>
         <div class="header">
             <div class="logo-container">
-                <img src="polchessBG.png" alt="PolChess Icon" class="logo">
+                <img src="/polchessBG.png" alt="PolChess Icon" class="logo">
                 <h1>olChess</h1>
                 <span class="subclass">Play</span>
                 <span class="subclass">Puzzles</span>
@@ -44,7 +45,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 <input type="text" id="searchInput" placeholder="Search">
-                <button class="sign-in-btn">Sign in </button>
+                <button class="sign-in-btn" onclick="redirectToLogin()">Sign in </button>
                 <div class="settings-container">
                     <button class="settings">⚙</button>
                     <div id="colorMenu" style="display:none;">
@@ -59,15 +60,10 @@
             </div>
         </div>
     </header>
-    <main>
-
-        <div class="frame">
-            <h3>Place</h3>
-
-        </div>
-
-
+    <main id="main-content">
+        
     </main>
+    
     <footer>
         <a href="https://github.com/paknot" target="_blank">
             <i class="fa-brands fa-github" aria-hidden="true"></i>

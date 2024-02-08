@@ -1,8 +1,11 @@
 require('dotenv').config(); // Load .env file
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
+const app = express();
+const port = 8080;
 // Connect to MongoDB
 const dbUsername = process.env.DB_username;
 const dbPassword = process.env.DB_password;
@@ -30,11 +33,26 @@ const users = database.collection("Users");
 
 //     await client.close();
 // }
+app.use(express.static(__dirname)); 
+// Home
+app.get('/M00864763', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+//   Login
+app.get('/M00864763/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+
+
+app.listen(port, () => {
+    console.log(`Server running on http://127.0.0.1:${port}/M00864763`);
+});
 
 async function find() {
     try {
         await users.createIndex({ name: "text" });
-        const query = { $text: { $search : "Ciba" } };
+        const query = { $text: { $search: "Ciba" } };
         const results = await users.find(query).toArray();
         console.log(results);
     } catch (error) {
