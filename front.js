@@ -1,4 +1,17 @@
-// the search animation
+//Redirection to home page after clicking on logo
+document.addEventListener('DOMContentLoaded', (event) => {
+    loadBackgroundColor();
+   //big brother listens
+    const logoLink = document.getElementById('home');
+    if (logoLink) {
+        logoLink.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            window.location.href = '/M00864763'; 
+        });
+    }
+});
+
+// the search animation ( sliding)
 document.addEventListener('DOMContentLoaded', (event) => {
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
@@ -6,7 +19,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Listen for search button click
     searchButton.addEventListener('click', function() {
-        // Toggle to active
+        
         searchContainer.classList.toggle('active');
 
         //auto focus
@@ -20,7 +33,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
-    // hiding input when not active
+    // removing input when not active
     searchInput.addEventListener('blur', function() {
         searchContainer.classList.remove('active');
         setTimeout(() => {
@@ -28,9 +41,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }, 500); 
     });
 });
+
+//change BG color
 function changeBackgroundColor(color) {
-  document.body.style.backgroundColor = color;
-}
+    document.body.style.backgroundColor = color;
+    localStorage.setItem('bgColor', color);
+  }
+  // Load the BG that was saved
+function loadBackgroundColor() {
+    const savedColor = localStorage.getItem('bgColor');
+    if (savedColor) {
+      document.body.style.backgroundColor = savedColor;
+    }
+  }
 
 document.addEventListener('click', function(event) {
   // Only add/remove spin class if clicked element is the settings button
@@ -57,7 +80,7 @@ document.addEventListener('click', function(event) {
 });
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    // Previous code for search animation and background color change here
+    loadBackgroundColor();
 
     // Redirect to login page
     const signInButton = document.querySelector('.sign-in-btn'); // Make sure this class matches your "Sign in" button
@@ -76,8 +99,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
               <input type="submit" value="SIGN IN">
               <div class="alternative-actions">
                 <a href="#">Register</a>
-                <a href="#">Password reset</a>
-                <a href="#">Log in by email</a>
+                
               </div>
             </form>
           </div>
