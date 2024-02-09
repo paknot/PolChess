@@ -1,9 +1,9 @@
 /* body */
 body {
     background-color: #40474f;
-    font-family: "Arial, Helvetica, sans-serif";
+    font-family: Arial, Helvetica, sans-serif;
 }
-
+/* Nav bar */
 .header {
     display: flex;
     justify-content: space-between;

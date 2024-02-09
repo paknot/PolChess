@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         //auto focus
         if (searchContainer.classList.contains('active')) {
             searchInput.style.visibility = 'visible';
-            searchInput.value = ''; // Clear the input value
+            searchInput.value = ''; //clear value
             searchInput.focus();
         } else {
             //if not active clear
@@ -83,14 +83,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     loadBackgroundColor();
 
     // Redirect to login page
-    const signInButton = document.querySelector('.sign-in-btn'); // Make sure this class matches your "Sign in" button
+    const signInButton = document.querySelector('.sign-in-btn'); 
     if (signInButton) {
         signInButton.addEventListener('click', function() {
             window.location.href = '/M00864763/login';
         });
     }
     function loadLoginForm() {
-        document.getElementById('main-content').innerHTML = `
+        document.getElementById('login').innerHTML = `
           <div class="login-form">
             <h2>Sign in</h2>
             <form id="loginForm">
@@ -112,3 +112,41 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.log("Error max");
     }
 });
+
+function loadUserProfile() {
+    const pathSegments = window.location.pathname.split('/');
+    const username = pathSegments[pathSegments.length - 1]; // Gets the last segment of the path
+  
+    // check if path for user
+    if (pathSegments.length === 3 && pathSegments[1].toLowerCase() === 'm00864763' && username) {
+      fetch(`/api/users/${username}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(user => {
+          if (user.username) {
+            document.getElementById('profile-name').textContent = `Welcome to the profile of ${user.username}`;
+          } else {
+            document.getElementById('profile-name').textContent = 'Username property not found';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('profile-name').textContent = 'Error loading profile';
+        });
+    }
+  }
+  //load user profile prototype
+  document.addEventListener('DOMContentLoaded', () => {
+    loadBackgroundColor(); //load bg
+  
+    
+    if (window.location.pathname.startsWith('/M00864763/') && !window.location.pathname.endsWith('/login')) {
+        loadUserProfile();
+      }
+  
+   
+  });

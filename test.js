@@ -1,8 +1,7 @@
 require('dotenv').config(); // Load .env file
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const app = express();
 const port = 8080;
@@ -11,8 +10,7 @@ const dbUsername = process.env.DB_username;
 const dbPassword = process.env.DB_password;
 const dbServer = process.env.DB_server;
 
-const uri = `mongodb+srv://${dbUsername}:${dbPassword}@${dbServer}/?
-retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${dbUsername}:${dbPassword}@${dbServer}/?retryWrites=true&w=majority`;
 console.log(uri);
 
 const client = new MongoClient(uri, {
@@ -23,43 +21,50 @@ const client = new MongoClient(uri, {
     }
 });
 
+// Database and user declaration
 const database = client.db("Polchess");
 const users = database.collection("Users");
 
-// async function insertOne(){
-//     const me = {name: "Maciej Ciba", email: "mc2084@live.mdx.ac.uk", stuID: "M00864763"};
-//     const result = await users.insertOne(me);
-//     console.log(result);
+app.use(express.static(__dirname));
 
-//     await client.close();
-// }
-app.use(express.static(__dirname)); 
 // Home
 app.get('/M00864763', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
-//   Login
+
+// Login
 app.get('/M00864763/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// API endpoint to get user data
+app.get('/api/users/:username', async (req, res) => {
+    const username = req.params.username;
+    
+    try {
+        await client.connect();
+        const user = await users.findOne({ username: username }); // Correct field to match your MongoDB document
 
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    } finally {
+        // It is not recommended to close the client after each request in a real-world scenario.
+        // You might want to use a connection pool or manage your client connections differently.
+        await client.close();
+    }
+});
 
+// Dynamic route for user profiles
+app.get('/M00864763/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html')); // Serve the same index.html for all profiles
+});
+//Where we running at
 app.listen(port, () => {
     console.log(`Server running on http://127.0.0.1:${port}/M00864763`);
 });
-
-async function find() {
-    try {
-        await users.createIndex({ name: "text" });
-        const query = { $text: { $search: "Ciba" } };
-        const results = await users.find(query).toArray();
-        console.log(results);
-    } catch (error) {
-        console.error('An error occurred:', error);
-    } finally {
-        await client.close();
-    }
-}
-find();
-
