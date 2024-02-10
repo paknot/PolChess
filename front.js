@@ -56,7 +56,7 @@ function loadBackgroundColor() {
   }
 
 document.addEventListener('click', function(event) {
-  // Only add/remove spin class if clicked element is the settings button
+  // spin if its .settings
   if (event.target.closest('.settings')) {
     const settingsButton = event.target.closest('.settings');
     settingsButton.classList.toggle('spin');
@@ -150,3 +150,46 @@ function loadUserProfile() {
   
    
   });
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    loadBackgroundColor();
+    setupSearch();
+    setupSettingsMenu();
+    handlePageLoad();
+});
+
+function setupSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default form submit
+                performUserSearch(searchInput.value.trim());
+            }
+        });
+    }
+
+    if (searchButton) {
+        searchButton.addEventListener('click', function() {
+            performUserSearch(searchInput.value.trim());
+        });
+    }
+}
+
+function performUserSearch(username) {
+    if (username) {
+        fetch(`/api/users/${username}`)
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = `/M00864763/${username}`; // go to user
+                } else {
+                    window.location.href = '/M00864763/error'; // go to error
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                window.location.href = '/M00864763/error'; // if anything else error
+            });
+    }
+}

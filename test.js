@@ -36,6 +36,9 @@ app.get('/M00864763', (req, res) => {
 app.get('/M00864763/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+app.get('/M00864763/error', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html')); // Serve the same index.html
+});
 
 // API endpoint to get user data
 app.get('/api/users/:username', async (req, res) => {
@@ -43,7 +46,7 @@ app.get('/api/users/:username', async (req, res) => {
     
     try {
         await client.connect();
-        const user = await users.findOne({ username: username }); // Correct field to match your MongoDB document
+        const user = await users.findOne({ username: username }); 
 
         if (user) {
             res.json(user);
@@ -54,15 +57,14 @@ app.get('/api/users/:username', async (req, res) => {
         console.error('An error occurred:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     } finally {
-        // It is not recommended to close the client after each request in a real-world scenario.
-        // You might want to use a connection pool or manage your client connections differently.
+        
         await client.close();
     }
 });
 
 // Dynamic route for user profiles
 app.get('/M00864763/:username', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html')); // Serve the same index.html for all profiles
+    res.sendFile(path.join(__dirname, 'index.html')); 
 });
 //Where we running at
 app.listen(port, () => {
