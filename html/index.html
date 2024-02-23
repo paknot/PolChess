@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Polchess</title>
     <meta name="description" content="chess site">
-    <link rel="stylesheet" href="../css/style.css">
-    <script src="../js/front.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/front.js"></script>
     <link rel="icon" href="../images/polchess.png" type="image/icon type">
     <!--For icons-->
     <script src="https://kit.fontawesome.com/eceeda5593.js" crossorigin="anonymous"></script>
@@ -25,7 +25,7 @@
                     <img src="../images/polchessBG.png" alt="PolChess Icon" class="logo">
                     <h1 class="logo-text">olChess</h1>
                 </a>
-
+                <!-- Subclasses -->
                 <div class="subclasses">
                     <span class="subclass" id="friends">
                         <i class="fa-solid fa-user-group"></i> Friends
@@ -38,9 +38,9 @@
                     </span>
                 </div>
             </div>
-
+            <!-- Chess Pieces -->
             <div class="Pieces">
-                <!-- Chess Pieces -->
+
                 <span class="piece">♚</span>
                 <span class="piece">♛</span>
                 <span class="piece">♜</span>
@@ -67,7 +67,7 @@
                     <button class="signBTN" id="signInBtn">Sign in</button>
                     <button class="signBTN" id="registerBtn">Register</button>
                 </div>
-                
+
                 <!-- Popup for Sign In -->
                 <div id="signInPopup" class="popup">
                     <div class="popup-content">
@@ -80,13 +80,13 @@
                         </form>
                     </div>
                 </div>
-                
+
                 <!-- Popup for Register -->
                 <div id="registerPopup" class="popup">
                     <div class="popup-content">
                         <span class="close">&times;</span>
                         <form id="registerForm">
-                            <h2>Register</h2> 
+                            <h2>Register</h2>
                             <input type="text" placeholder="Username" name="user" required>
                             <input type="text" placeholder="Email" name="email" required>
                             <input type="password" placeholder="Password" name="password" required>
@@ -94,8 +94,8 @@
                         </form>
                     </div>
                 </div>
-                
-            
+
+
                 <!-- Settings and colour menu -->
                 <div class="settings-container">
                     <button class="settings">⚙</button>
@@ -111,46 +111,46 @@
             </div>
         </div>
     </header>
-    <div id="profile-container">
-        <h1 id="profile-name"></h1>
 
-    </div>
-    <!-- login -->
-    <div id="login"></div>
-    <div id="register"></div>
+    <!-- Hardcoded message examples -->
     <div id="message-bar" class="message-bar" style="display: none;">
-        <!-- Hardcoded message examples -->
+
         <h1>Inbox</h1>
         <div class="message">
-            <div class="username">chess123</div>
-            <div class="message-text">This shows</div>
+            <div class="username">
+                <img src="../images/avatar2.jpg" alt="User Avatar" class="profilePic">chess123
+            </div>
+            <div class="message-text">This shows how the</div>
         </div>
         <div class="message">
-            <div class="username">Username2</div>
-            <div class="message-text">how the inbox.</div>
+            <div class="username">
+                <img src="../images/avatar3.jpg" alt="User Avatar" class="profilePic">paknot
+            </div>
+            <div class="message-text">inbox will look but in final </div>
         </div>
         <div class="message">
-            <div class="username">paknot</div>
-            <div class="message-text">will look but in final </div>
-        </div>
-        <div class="message">
-            <div class="username">M00864763</div>
+            <div class="username">
+                <img src="../images/avatar1.jpg" alt="User Avatar" class="profilePic">M00864763
+            </div>
             <div class="message-text">messages will be done dynamicly</div>
         </div>
     </div>
+    <!-- Hardcoded friends examples -->
     <div id="friends-bar" class="message-bar">
-        <!-- Hardcoded friends examples -->
+
         <h1>Friend List</h1>
-        <div class="friends-item">chess123</div>
-        <div class="friends-item">paknot</div>
-        <div class="friends-item">M00864763</div>
-    
+        <div class="friends-item">
+            <img src="../images/avatar2.jpg" alt="User Avatar" class="profilePic">chess123
+        </div>
+        <div class="friends-item">
+            <img src="../images/avatar3.jpg" alt="User Avatar" class="profilePic">paknot
+        </div>
+        <div class="friends-item">
+            <img src="../images/avatar1.jpg" alt="User Avatar" class="profilePic">
+            M00864763
+        </div>
+
     </div>
-
-
-
-    <!-- Error -->
-    <div id="error-message" class="error-message"></div>
 
     <!-- Feed Section -->
     <section id="feed">
@@ -165,16 +165,16 @@
                         <i class="fa-regular fa-file-image"></i>
                     </button>
                     <button class="post-submit-btn">Create Post</button>
-                    
+
                 </div>
             </div>
-            <!-- Sample Post -->
+            <!-- Sample Posts -->
             <article class="post">
                 <div class="post-header">
                     <img src="../images/avatar2.jpg" alt="User Avatar" class="post-avatar">
                     <div class="post-info">
-                        <strong>Username · 1h</strong>
-                        
+                        <strong>chess123 · 1h</strong>
+
                     </div>
                 </div>
                 <div class="post-content">
@@ -199,8 +199,8 @@
                 <div class="post-header">
                     <img src="../images/avatar3.jpg" alt="User Avatar" class="post-avatar">
                     <div class="post-info">
-                        <strong>Username1 · 3h</strong>
-                        
+                        <strong>paknot · 3h</strong>
+
                     </div>
                 </div>
                 <div class="post-content">
@@ -223,8 +223,8 @@
                 <div class="post-header">
                     <img src="../images/avatar1.jpg" alt="User Avatar" class="post-avatar">
                     <div class="post-info">
-                        <strong>Username3 · 11h</strong>
-                        
+                        <strong>M00864763 · 11h</strong>
+
                     </div>
                 </div>
                 <div class="post-content">

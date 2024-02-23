@@ -3,6 +3,7 @@ body {
     background-color: #40474f;
     font-family: Arial, Helvetica, sans-serif;
 }
+
 /* Nav bar */
 .header {
     display: flex;
@@ -11,6 +12,7 @@ body {
     padding: 10px;
     color: #BABABA;
 }
+
 /* name and logo */
 .logo-container {
     cursor: pointer;
@@ -21,18 +23,19 @@ body {
 #home {
     display: flex;
     align-items: center;
-    text-decoration: none; 
-    color: inherit; 
+    text-decoration: none;
+    color: inherit;
 }
 
 .logo-container .logo {
-    height: 60px; 
+    height: 60px;
 }
 
 .logo-container .logo-text {
-    font-size: 1.5em; 
-    margin-left: 10px; 
+    font-size: 1.5em;
+    margin-left: 10px;
 }
+
 /* all subclasses */
 .subclasses {
     display: flex;
@@ -40,9 +43,10 @@ body {
     margin-left: 15px;
     text-decoration: none;
 }
+
 /* each subclass */
 .subclass {
-    
+
     margin: 10px;
 }
 
@@ -51,20 +55,23 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content:space-between; 
+    justify-content: space-between;
 }
+
 /* Magnifying glass */
 #searchButton {
     transition: all 0.5s ease;
-    z-index: 2; 
+    z-index: 2;
     background-color: transparent;
     border: none;
     font-size: 20px;
     margin-right: 10px;
 }
-#searchButton :hover{
-    color:#BBBBBB;
+
+#searchButton :hover {
+    color: #BBBBBB;
 }
+
 /* input for searching users */
 #searchInput {
     position: absolute;
@@ -83,20 +90,23 @@ body {
 
 /* when active slide to left and reveal */
 .search-container.active #searchButton {
-    transform: translateX(-190px); 
+    transform: translateX(-190px);
     padding: 20px;
 }
+
 /* open up the input */
 .search-container.active #searchInput {
-    width: 170px; /* Adjust width as needed */
+    width: 170px;
     opacity: 1;
     visibility: visible;
 }
+
 .logReg {
-        display: flex;
-        align-items: center;
-    margin-left: auto; /* Push to the right */
+    display: flex;
+    align-items: center;
+    margin-left: auto;
 }
+
 /* sign in button */
 .signBTN {
     padding: 5px;
@@ -107,81 +117,102 @@ body {
     cursor: pointer;
     margin: 5px;
 }
+
+/* hover sign in button */
 .signBTN:hover {
-    background-color:#023c7a;
+    background-color: #023c7a;
 }
+
 /* Setting gear */
-.settings{
+.settings {
     cursor: pointer;
     background-color: transparent;
     border: none;
-    font-size:30px;
+    font-size: 30px;
     transition: color 0.3s ease;
-    
+
 }
-.settings:hover{
-     color: #BABABA;
+
+/* gear hovered */
+.settings:hover {
+    color: #BABABA;
 }
+
 /* Gear spin */
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .spin {
     animation: spin 2s;
 }
+
 /* container for all setting */
 .settings-container {
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-  }
-  /* color Menu */
+}
+
+/* color Menu */
 #colorMenu {
-    position: absolute; 
-    top: 100%; 
+    position: absolute;
+    top: 100%;
     left: 0;
     border: none;
     padding: 5px;
     display: none;
     background-color: #373D43;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     text-align: center;
     z-index: 10;
 }
+
 /* Color options */
-#standard{
+#standard {
     width: 100%;
-    border:none;
+    border: none;
     background-color: #40474f;
     border-radius: 5px;
 }
-#blue{
+
+#blue {
     width: 100%;
-    border:none;
+    border: none;
     background-color: #003268;
     border-radius: 5px;
 }
-#green{
+
+#green {
     width: 100%;
-    border:none;
+    border: none;
     background-color: #1E5531;
     border-radius: 5px;
 }
-#violet{
+
+#violet {
     width: 100%;
-    border:none;
+    border: none;
     background-color: #36005A;
     border-radius: 5px;
 }
+
 /* Pieces jumping */
 @keyframes jump {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-15px);
     }
@@ -189,7 +220,7 @@ body {
 
 .piece {
     cursor: pointer;
-    display: inline-block; 
+    display: inline-block;
     transition: transform 0.2s ease;
     user-select: none;
 }
@@ -197,13 +228,18 @@ body {
 .piece:active {
     animation: jump 0.8s ease;
 }
+
 /* Knight animation */
 @keyframes knight-move {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translate(0, 0);
     }
+
     50% {
-        transform: translate(20px, -40px); /* about 2 up 1 right*/
+        transform: translate(20px, -40px);
+        /* about 2 up 1 right*/
     }
 }
 
@@ -216,13 +252,18 @@ body {
 .knight:active {
     animation: knight-move 0.7s ease;
 }
+
 /* bishop animation */
 @keyframes bishop-move {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translate(0, 0);
     }
+
     50% {
-        transform: translate(40px, -40px); /* */
+        transform: translate(40px, -40px);
+        /* */
     }
 }
 
@@ -235,7 +276,8 @@ body {
 .bishop:active {
     animation: bishop-move 0.7s ease;
 }
-.pieces{
+
+.pieces {
     cursor: pointer;
 }
 
@@ -273,6 +315,7 @@ footer a {
     text-align: center;
 }
 
+/* Post */
 .post {
     background-color: #84888c;
     margin-bottom: 20px;
@@ -287,6 +330,7 @@ footer a {
     margin-bottom: 10px;
 }
 
+/* Avatars */
 .post-avatar {
     width: 50px;
     height: 50px;
@@ -329,6 +373,8 @@ footer a {
 .post-actions button:hover {
     color: #023c7a;
 }
+
+/* Comments container */
 .comments-container {
     margin-top: 10px;
     padding: 10px;
@@ -340,10 +386,12 @@ footer a {
     width: 97%;
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    background-color: #acaeb0;
+    border: 1px solid #8cbae8;
     border-radius: 4px;
 }
 
+/* Submit comment button */
 .submit-comment {
     background-color: #0261c5;
     color: #fff;
@@ -352,54 +400,85 @@ footer a {
     padding: 8px 16px;
     cursor: pointer;
 }
-.submit-comment:hover{
+
+/* submit comment hovered */
+.submit-comment:hover {
     background-color: #023c7a;
 }
+
+/* Change color of liked  */
 .liked {
     color: #ef3333;
-  }
-  /* Message bar */
-  .message-bar {
+}
+
+/* Messages window */
+#message-bar {
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+}
+
+#message-bar.show {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+/* Message bar class */
+.message-bar {
     border-radius: 8px;
-    width: 300px; 
-    position: fixed; 
-    right: 0; 
+    width: 300px;
+    position: fixed;
+    right: 0;
     margin-top: 0;
     margin-right: 25px;
-    background-color: #696b6d; 
-    height: 100%; 
-    overflow-y: auto; 
+    background-color: #696b6d;
+    height: 100%;
+    overflow-y: auto;
     align-items: center;
     text-align: center;
     max-height: 550px;
 }
 
 .message {
-    padding: 10px; 
+    padding: 10px;
     background-color: #84888c;
     margin-bottom: 10px;
 }
+
 .message-bar .username {
-    font-weight: bold; 
-    font-size: 1em; /
-  }
-  
-  .message-bar .message-text {
-    font-size: 0.87em; 
-  }
-  #friends-bar {
-    display: none;
+    font-weight: bold;
+    font-size: 1em;/
+}
+
+.message-bar .message-text {
+    font-size: 0.87em;
+}
+
+/* Friends bar */
+#friends-bar {
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s, opacity 0.5s linear;
     border-radius: 10px;
-    width: 300px; 
+    width: 300px;
     left: 0;
     margin-top: 0;
     margin-left: 25px;
-    background-color: 84888c;
-    height: 100%; 
-    overflow-y: auto; 
+    background-color: #696b6d;
+    height: 100%;
+    overflow-y: auto;
     align-items: center;
     text-align: center;
     max-height: 550px;
+}
+
+#friends-bar.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s 0s, opacity 0.5s linear;
 }
 
 /* Style for each friend item */
@@ -407,12 +486,10 @@ footer a {
     padding: 10px;
     border-bottom: 0.5px solid #ccc;
     margin-bottom: auto;
-    color: #BABABA;
+    color: black;
 }
 
-#friends-bar.show {
-    display: block; 
-}
+/* Container for creating posts */
 .create-post-container {
     background-color: #84888c;
     border-radius: 8px;
@@ -421,12 +498,14 @@ footer a {
     display: flex;
     align-items: flex-start;
 }
+
 /* Post things */
 .post-input-container {
     width: 85%;
     margin-left: 10px;
 }
 
+/* Input box for posting */
 .post-input {
     width: 98%;
     height: 100px;
@@ -435,9 +514,10 @@ footer a {
     background-color: #acaeb0;
     border: 1px solid #8cbae8;
     border-radius: 8px;
-    resize: none; 
+    resize: none;
 }
 
+/* Submit post button */
 .post-submit-btn {
     background-color: #0261c5;
     color: white;
@@ -450,43 +530,50 @@ footer a {
     border-radius: 8px;
     cursor: pointer;
 }
+
+/* Post submit on hovered */
 .post-submit-btn:hover {
     background-color: #023c7a;
 }
-.image{
+
+/*  */
+.image {
     cursor: pointer;
-    border:none;
+    border: none;
     font-size: 16px;
     border-radius: 8px;
     display: inline-block;
     padding: 10px 20px;
     background-color: transparent;
 }
-.image:hover{
-    color:#0056b3
+
+.image:hover {
+    color: #0056b3
 }
+
 /* Pop up windows */
 .popup {
-    display: none; 
+    display: none;
     position: fixed;
-    z-index: 1; 
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
+
+
 
 /* Popup Content Box */
 .popup-content {
-    background-color: #acaeb0; 
-    margin: 15% auto; 
+    background-color: #acaeb0;
+    margin: 15% auto;
     padding: 20px;
-    border: 1px solid #444; 
+    border: 1px solid #444;
     width: 30%;
-    color: black; 
+    color: black;
     border-radius: 15px;
 }
 
@@ -509,34 +596,44 @@ footer a {
 /* Input fields styling */
 .popup input[type="text"],
 .popup input[type="password"] {
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px);
     padding: 10px;
-    margin: 10px 10px; 
+    margin: 10px 10px;
     display: inline-block;
-    border: 1px solid red; 
-    box-sizing: border-box; 
+    border: 1px solid red;
+    box-sizing: border-box;
 }
 
 /* Set a style for the submit/login button */
 .popup button[type="submit"] {
-    background-color: #0261c5; /* Bootstrap primary color */
+    background-color: #0261c5;
+    /* Bootstrap primary color */
     color: white;
     padding: 14px 20px;
     margin: 8px 110px;
     border: none;
     cursor: pointer;
     width: 50%;
-    
+
 }
 
 .popup button[type="submit"]:hover {
-    background-color: #023c7a; 
+    background-color: #023c7a;
 }
 
 /* Headings for popups */
 .popup h2 {
     text-align: center;
 }
-.picture{
+
+/* Users pictures */
+.picture {
     width: 80%;
+}
+
+/* Profile pictures */
+.profilePic {
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
 }

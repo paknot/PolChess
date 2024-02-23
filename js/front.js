@@ -1,62 +1,62 @@
 //Redirection to home page after clicking on logo
 document.addEventListener('DOMContentLoaded', (event) => {
-    loadBackgroundColor();
-   //big brother listens
-    const logoLink = document.getElementById('home');
-    if (logoLink) {
-        logoLink.addEventListener('click', function(e) {
-            e.preventDefault(); 
-            window.location.href = '/M00864763'; 
-        });
-    }
+  loadBackgroundColor();
+  //big brother listens
+  const logoLink = document.getElementById('home');
+  if (logoLink) {
+    logoLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.location.href = '/M00864763';
+    });
+  }
 });
 
 // the search animation ( sliding)
 document.addEventListener('DOMContentLoaded', (event) => {
-    const searchButton = document.getElementById('searchButton');
-    const searchInput = document.getElementById('searchInput');
-    const searchContainer = document.querySelector('.search-container');
+  const searchButton = document.getElementById('searchButton');
+  const searchInput = document.getElementById('searchInput');
+  const searchContainer = document.querySelector('.search-container');
 
-    // Listen for search button click
-    searchButton.addEventListener('click', function() {
-        
-        searchContainer.classList.toggle('active');
+  // Listen for search button click
+  searchButton.addEventListener('click', function () {
 
-        //auto focus
-        if (searchContainer.classList.contains('active')) {
-            searchInput.style.visibility = 'visible';
-            searchInput.value = ''; //clear value
-            searchInput.focus();
-        } else {
-            //if not active clear
-            searchInput.value = '';
-        }
-    });
+    searchContainer.classList.toggle('active');
 
-    // removing input when not active
-    searchInput.addEventListener('blur', function() {
-        searchContainer.classList.remove('active');
-        setTimeout(() => {
-            searchInput.style.visibility = 'hidden';
-        }, 500); 
-    });
+    //auto focus
+    if (searchContainer.classList.contains('active')) {
+      searchInput.style.visibility = 'visible';
+      searchInput.value = ''; //clear value
+      searchInput.focus();
+    } else {
+      //if not active clear
+      searchInput.value = '';
+    }
+  });
+
+  // removing input when not active
+  searchInput.addEventListener('blur', function () {
+    searchContainer.classList.remove('active');
+    setTimeout(() => {
+      searchInput.style.visibility = 'hidden';
+    }, 500);
+  });
 });
 
 //change BG color
 function changeBackgroundColor(color) {
-    document.body.style.backgroundColor = color;
-    localStorage.setItem('bgColor', color);
-  }
-  // Load the BG that was saved
+  document.body.style.backgroundColor = color;
+  localStorage.setItem('bgColor', color);
+}
+// Load the BG that was saved
 function loadBackgroundColor() {
-    const savedColor = localStorage.getItem('bgColor');
-    if (savedColor) {
-      document.body.style.backgroundColor = savedColor;
-    }
+  const savedColor = localStorage.getItem('bgColor');
+  if (savedColor) {
+    document.body.style.backgroundColor = savedColor;
   }
+}
 
 //Settings spin
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   // spin if its .settings
   if (event.target.closest('.settings')) {
     const settingsButton = event.target.closest('.settings');
@@ -82,44 +82,44 @@ document.addEventListener('click', function(event) {
 
 //Setting the search up
 function setupSearch() {
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-    if (searchInput) {
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault(); //no deafult
-                performUserSearch(searchInput.value.trim());
-            }
-        });
-    }
+  const searchInput = document.getElementById('searchInput');
+  const searchButton = document.getElementById('searchButton');
+  if (searchInput) {
+    searchInput.addEventListener('keypress', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); //no deafult
+        performUserSearch(searchInput.value.trim());
+      }
+    });
+  }
 
-    if (searchButton) {
-        searchButton.addEventListener('click', function() {
-            performUserSearch(searchInput.value.trim());
-        });
-    }
+  if (searchButton) {
+    searchButton.addEventListener('click', function () {
+      performUserSearch(searchInput.value.trim());
+    });
+  }
 }
 //liking posts
-document.addEventListener('DOMContentLoaded', function() {
-  
+document.addEventListener('DOMContentLoaded', function () {
+
   const likeButtons = document.querySelectorAll('.likeBTN');
 
   //listen to clicks
   likeButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       const icon = this.querySelector('.fa-heart');
       // change color
       icon.classList.toggle('liked');
-      
+
       // Initialize or update the like count
       let likeCount = parseInt(this.getAttribute('data-likes') || '0');
       if (icon.classList.contains('liked')) {
         likeCount++; // Increment like count if liked
       } else {
-        likeCount--; 
+        likeCount--;
       }
       this.setAttribute('data-likes', likeCount); // Update data
-      
+
       // display number of likes
       this.innerHTML = `<i class="fa fa-heart${icon.classList.contains('liked') ? ' liked' : ''}"></i> Like (${likeCount})`;
     });
@@ -127,80 +127,88 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 // Message bar
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.getElementById('messages').addEventListener('click', function() {
-      let messageBar = document.getElementById('message-bar');
-      if (messageBar.style.display === 'none') {
-          messageBar.style.display = 'block'; 
-      } else {
-          messageBar.style.display = 'none'; 
-      }
+  document.getElementById('messages').addEventListener('click', function () {
+    let messageBar = document.getElementById('message-bar');
+    if (messageBar.classList.contains('show')) {
+      messageBar.classList.remove('show');
+      setTimeout(function () {
+        messageBar.style.display = 'none';
+      }, 500);
+    } else {
+      messageBar.style.display = 'block';
+      setTimeout(function () {
+        messageBar.classList.add('show');
+      }, 10);
+    }
   });
 });
 // Function to toggle friends list
-document.addEventListener('DOMContentLoaded', function() {
-  
+document.addEventListener('DOMContentLoaded', function () {
+
   function toggleFriendsList() {
-      let friendsBar = document.getElementById('friends-bar');
-      friendsBar.classList.toggle('show');
+    let friendsBar = document.getElementById('friends-bar');
+    friendsBar.classList.toggle('show');
   }
 
   // Attach the toggle function to the friends button
   let friendsBtn = document.getElementById('friends');
   friendsBtn.addEventListener('click', toggleFriendsList);
 });
+
 //Slides comment bar
 function toggleCommentInput(commentButton) {
-  
+
   let postArticle = commentButton.closest('article');
-  
+
   let commentContainer = postArticle.querySelector('.comments-container');
-  
+
   commentContainer.style.display = commentContainer.style.display === 'block' ? 'none' : 'block';
 }
-
 // Event listener for all comments
-document.addEventListener('DOMContentLoaded', function() {
-  
+document.addEventListener('DOMContentLoaded', function () {
+
   let commentButtons = document.querySelectorAll('.commentBTN');
-  
-  commentButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-          toggleCommentInput(this);
-      });
+
+  commentButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      toggleCommentInput(this);
+    });
   });
 });
+
 // Refreshes a page
 function refreshPage() {
   window.location.reload();
 }
 
 // Listen for refresh
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Get the refresh button by its ID
-  let refreshBtn = document.getElementById('refresh'); 
-  
+  let refreshBtn = document.getElementById('refresh');
+
   refreshBtn.addEventListener('click', refreshPage);
 });
 
+// Pop up windows login/register
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.getElementById('signInBtn').addEventListener('click', function() {
-      document.getElementById('signInPopup').style.display = 'block';
+  document.getElementById('signInBtn').addEventListener('click', function () {
+    document.getElementById('signInPopup').style.display = 'block';
   });
 
-  document.getElementById('registerBtn').addEventListener('click', function() {
-      document.getElementById('registerPopup').style.display = 'block';
+  document.getElementById('registerBtn').addEventListener('click', function () {
+    document.getElementById('registerPopup').style.display = 'block';
   });
 
-  var closeButtons = document.querySelectorAll('.close');
-  closeButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-          this.closest('.popup').style.display = 'none';
-      });
+  let closeButtons = document.querySelectorAll('.close');
+  closeButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      this.closest('.popup').style.display = 'none';
+    });
   });
 
-  window.addEventListener('click', function(event) {
-      if (event.target.classList.contains('popup')) {
-          event.target.style.display = 'none';
-      }
+  window.addEventListener('click', function (event) {
+    if (event.target.classList.contains('popup')) {
+      event.target.style.display = 'none';
+    }
   });
 });
