@@ -1,0 +1,901 @@
+/* body */
+body {
+    background-color: #40474f;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Nav bar */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: #BABABA;
+}
+
+/* name and logo */
+.logo-container {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+#home {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-container .logo {
+    height: 60px;
+}
+
+.logo-container .logo-text {
+    font-size: 1.5em;
+    margin-left: 10px;
+}
+
+/* all subclasses */
+.subclasses {
+    display: flex;
+    flex-direction: row;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+/* each subclass */
+.subclass {
+
+    margin: 10px;
+}
+
+/* Main search container */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Magnifying glass */
+#searchButton {
+    transition: all 0.5s ease;
+    z-index: 2;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    margin-right: 10px;
+    position: relative;
+}
+
+#searchButton :hover {
+    color: #BBBBBB;
+}
+
+/* input for searching users */
+#searchInput {
+    position: absolute;
+    width: 100vh;
+    right: 140px;
+    transition: all 0.5s ease;
+    opacity: 0;
+    visibility: hidden;
+    border: none;
+    padding: -50px;
+    color: white;
+    background-color: transparent;
+    margin: 30px;
+}
+
+
+/* when active slide to left and reveal */
+.search-container.active #searchButton {
+    transform: translateX(-200px);
+    padding: 20px;
+}
+
+/* open up the input */
+.search-container.active #searchInput {
+    width: 170px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.logReg {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    position: relative;
+    display: inline-block;
+}
+
+/* sign in button */
+.signBTN {
+    padding: 5px;
+    background-color: #0261c5;
+    color: #000000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+/* hover sign in button */
+.signBTN:hover {
+    background-color: #023c7a;
+}
+
+/* Setting gear */
+.settings {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    transition: color 0.3s ease;
+
+}
+
+/* gear hovered */
+.settings:hover {
+    color: #BABABA;
+}
+
+/* Gear spin */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin {
+    animation: spin 2s;
+}
+
+/* container for all setting */
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* color Menu */
+#colorMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border: none;
+    padding: 5px;
+    display: none;
+    background-color: #373D43;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 10;
+}
+
+/* Color options */
+#standard {
+    width: 100%;
+    border: none;
+    background-color: #40474f;
+    border-radius: 5px;
+}
+
+#blue {
+    width: 100%;
+    border: none;
+    background-color: #003268;
+    border-radius: 5px;
+}
+
+#green {
+    width: 100%;
+    border: none;
+    background-color: #1E5531;
+    border-radius: 5px;
+}
+
+#violet {
+    width: 100%;
+    border: none;
+    background-color: #36005A;
+    border-radius: 5px;
+}
+
+/* Pieces jumping */
+@keyframes jump {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.piece {
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+
+.piece:active {
+    animation: jump 0.8s ease;
+}
+
+/* Knight animation */
+@keyframes knight-move {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(20px, -40px);
+        /* about 2 up 1 right*/
+    }
+}
+
+.knight {
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+}
+
+.knight:active {
+    animation: knight-move 0.7s ease;
+}
+
+/* bishop animation */
+@keyframes bishop-move {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(40px, -40px);
+        /* */
+    }
+}
+
+.bishop {
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+}
+
+.bishop:active {
+    animation: bishop-move 0.7s ease;
+}
+
+.pieces {
+    cursor: pointer;
+}
+
+/* footer max */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: lightgrey;
+    text-align: center;
+    padding: 7px;
+}
+
+footer a {
+    text-decoration: none;
+    color: black;
+}
+
+
+.flex-container{
+    height: 100%;
+    max-width: 620px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #696b6d;
+    border-radius: 8px;
+    overflow: auto;
+}
+.flex-container h2{
+    color: #BABABA;
+    text-align: center;
+}
+/* Feed Styling */
+.feed-container {
+    height: 100%;
+    max-width: 620px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #696b6d;
+    border-radius: 8px;
+    overflow: auto;
+}
+
+
+
+/* Post */
+.post {
+    background-color: #84888c;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Avatars */
+.post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-info strong {
+    display: block;
+    
+}
+
+.post-info span {
+    color: #cdcccc;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.post-content p {
+    margin: 0;
+    color: #1c1919;
+}
+
+.post-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.post-actions button {
+    border: none;
+    background: none;
+    color: #0261c5;
+    cursor: pointer;
+}
+
+.post-actions button i {
+    margin-right: 5px;
+}
+
+/* Hover effects */
+.post-actions button:hover {
+    color: #023c7a;
+}
+
+/* Comments container */
+.comments-container {
+    margin-top: 10px;
+    padding: 10px;
+    background: #cac5c5;
+    border-top: 1px solid #eee;
+}
+
+.comment-input {
+    width: 97%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #acaeb0;
+    border: 1px solid #8cbae8;
+    border-radius: 4px;
+}
+
+/* Submit comment button */
+.submit-comment {
+    background-color: #0261c5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* submit comment hovered */
+.submit-comment:hover {
+    background-color: #023c7a;
+}
+
+/* Change color of liked  */
+.liked {
+    color: #ef3333;
+}
+
+/* Messages window */
+#message-bar {
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+}
+
+#message-bar.show {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+/* Message bar class */
+.message-bar {
+    border-radius: 8px;
+    width: 300px;
+    position: fixed;
+    right: 0;
+    margin-top: 0;
+    margin-right: 25px;
+    background-color: #696b6d;
+    height: 100%;
+    overflow-y: auto;
+    align-items: center;
+    text-align: center;
+    max-height: 550px;
+}
+
+.message {
+    padding: 10px;
+    background-color: #84888c;
+    margin-bottom: 10px;
+}
+
+/* Friends bar */
+#friends-bar {
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s, opacity 0.5s linear;
+    border-radius: 10px;
+    width: 300px;
+    left: 0;
+    margin-top: 0;
+    margin-left: 25px;
+    background-color: #696b6d;
+    height: 100%;
+    overflow-y: auto;
+    align-items: center;
+    text-align: center;
+    max-height: 550px;
+}
+
+#friends-bar.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s 0s, opacity 0.5s linear;
+}
+
+/* Style for each friend item */
+.friends-item {
+    padding: 10px;
+    border-bottom: 0.5px solid #ccc;
+    margin-bottom: auto;
+    color: black;
+}
+
+/* Container for creating posts */
+.create-post-container {
+    background-color: #84888c;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Post things */
+.post-input-container {
+    width: 85%;
+    margin-left: 10px;
+}
+
+/* Input box for posting */
+.post-input {
+    width: 98%;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #acaeb0;
+    border: 1px solid #8cbae8;
+    border-radius: 8px;
+    resize: none;
+}
+
+/* Submit post button */
+.post-submit-btn {
+    background-color: #0261c5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Post submit on hovered */
+.post-submit-btn:hover {
+    background-color: #023c7a;
+}
+
+/*  */
+.image {
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+}
+
+.image:hover {
+    color: #0056b3
+}
+
+/* Pop up windows */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+
+/* Popup Content Box */
+.popup-content {
+    background-color: #acaeb0;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #444;
+    width: 30%;
+    color: black;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+}
+
+/* The Close Button */
+.close {
+    color: black;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: rgb(36, 26, 26);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Input fields styling */
+.popup input[type="text"],
+.popup input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 10px;
+    display: inline-block;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+
+/* Set a style for the submit/login button */
+.popup button[type="submit"] {
+    background-color: #0261c5;
+    /* Bootstrap primary color */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 110px;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+
+}
+
+.popup button[type="submit"]:hover {
+    background-color: #023c7a;
+}
+
+/* Headings for popups */
+.popup h2 {
+    text-align: center;
+}
+
+/* Users pictures */
+.picture {
+    width: 80%;
+}
+
+/* Profile pictures */
+.profilePic {
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
+}
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    position: absolute;
+    background-color: #acaeb0;
+    width: 120px; 
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 8px 0;
+    z-index: 1;
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+    box-sizing: border-box; 
+  }
+  
+  /* Dropdown Menu Items Styles */
+  .dropdown-menu a,
+  .dropdown-menu button {
+    padding: 8px 15px;
+    display: block;
+    color: black;
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    width: auto; 
+    box-sizing: border-box; 
+  }
+  
+  .dropdown-menu a:hover,
+  .dropdown-menu button:hover {
+    background-color: #bababa;
+  }
+  
+  /* User Menu Button Styles */
+  .user-menu-button {
+    background-color: #0261c5;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .user-menu-button:hover {
+    background-color: #023c7a;
+  }
+
+  .dropdown-content {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.post-image {
+    max-width: 100%; 
+    height: auto;
+    object-fit: cover; 
+  }
+  #friends-bar h3 {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  #user-info-box{
+    position: absolute;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid #161515;
+    padding: 5px 5px;
+    border-radius: 5px;
+    max-width: 400px;
+    word-wrap: normal;
+  }
+  .username{
+    padding: 2px 10px 2px;
+    cursor: pointer;
+  }
+  #updateProfileForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto; /* Use auto or set a specific width */
+    padding: 20px; /* Add some padding around the form */
+  }
+ 
+  #updateProfileForm h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+#updateProfileForm label,
+#updateProfileForm input,
+#updateProfileForm textarea,
+#updateProfileForm button {
+  width: 90%; 
+  margin-bottom: 10px; 
+}
+
+/* Submit button styling */
+#updateProfileForm button {
+    background-color: #0261c5;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 40%;
+}
+
+#updateProfileForm button:hover {
+    background-color: #023c7a;
+}
+#follow{
+    margin-left: 44%;
+    border-radius: 6px;
+    border: none;
+    background-color: #0261c5;
+    color: #000000;
+    padding: 3px;
+}
+#follow:hover{
+    background-color: #023c7a;
+}
+#message-input{
+    border: none;
+    border-radius: 7px;
+    margin-left: 15%;
+}
+#send-message{
+    border-radius: 6px;
+    border: none;
+    background-color: #111D4A;
+    color: #FFF;
+    padding: 3px;
+}
+#send-message:hover{
+    background-color: #023c7a;
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 100; 
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #acaeb0;
+    margin: 15% auto;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    display: flex; /* Add this line */
+    flex-direction: column; /* Add this line */
+    justify-content: center;
+    text-align: center;
+}
+.modal-content p{
+    font-size: 22px;
+    font-weight: bold;
+}
+  
+  /* The Close Button */
+  .close {
+    color: #4a3737;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 100%;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  #solutionDiv {
+    display: flex; /* Add this line */
+    flex-direction: column; /* Add this line */
+}
+#solutionDiv label{
+    margin: 10px 10px 10px;
+    font-weight: bold;
+}
+#solutionDiv textArea{
+    width: 120px;
+    margin-left: 41%;
+    margin-bottom: 10px;
+}
+#solutionDiv button{
+    width: 200px;
+    margin-left: 36%;
+    background-color: #0261c5;
+    border: none;
+    border-radius: 5px;
+}
+#solutionDiv button:hover{
+    background-color: #023c7a;
+}
+#myBoard{
+    margin-left: 23%;
+}
+#puzzles{
+    background-color: transparent;
+    border: none;
+    color: #BABABA;
+    font-size: 16px;
+    padding-left: 10px;
+    margin-left: 0;
+    cursor: pointer;
+}
+#send-message{
+    margin-left: 42%;
+    margin-top: 5px;
+}
+.following-text {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 10px;
+}
+.message-text {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 10px;
+}

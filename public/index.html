@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Polchess</title>
+    <meta name="description" content="chess site">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/front.js"></script>
+    <link rel="icon" href="/images/polchess.png" type="image/icon type">
+    <!--For icons-->
+    <script src="https://kit.fontawesome.com/eceeda5593.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
+        integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+        crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
+        integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header">
+            <!-- Logo and Navigation -->
+            <div class="logo-container">
+                <!-- Home link -->
+                <a id="home">
+                    <img src="/images/polchessBG.png" alt="PolChess Icon" class="logo">
+                    <h1 class="logo-text">olChess</h1>
+                </a>
+                <!-- Subclasses -->
+                <div class="subclasses">
+                    <span class="subclass" id="friends">
+                        <i class="fa-solid fa-user-group"></i> Friends
+                    </span>
+                    <span class="subclass" id="refresh">
+                        <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                    </span>
+                    <span class="subclass" id="messages">
+                        <i class="fa-regular fa-message"></i> Messages
+                    </span>
+                    <button class="subclass" id="puzzles">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        Puzzles
+                    </button>
+                </div>
+            </div>
+            <!-- Chess Pieces -->
+            <div class="Pieces">
+
+                <span class="piece">♚</span>
+                <span class="piece">♛</span>
+                <span class="piece">♜</span>
+                <span class="bishop">♝</span>
+                <span class="knight">♞</span>
+                <span class="piece">♟</span>
+                <span class="piece">♔</span>
+                <span class="piece">♕</span>
+                <span class="piece">♖</span>
+                <span class="bishop">♗</span>
+                <span class="knight">♘</span>
+                <span class="piece">♙</span>
+            </div>
+
+            <!-- Search and Sign In -->
+            <div class="search-container">
+                <!-- Search Input -->
+                <button id="searchButton">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <input type="text" id="searchInput" placeholder="Search user or tag">
+                <!-- Sign in -->
+                <div class="logReg">
+                    <button class="signBTN" id="signInBtn">Sign in</button>
+                    <button class="signBTN" id="registerBtn">Register</button>
+                </div>
+
+                <!-- Popup for Sign In -->
+                <div id="signInPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close">&times;</span>
+                        <form id="signInForm">
+                            <h2>Sign In</h2>
+                            <input type="text" placeholder="Username" name="user" required>
+                            <input type="password" placeholder="Password" name="password" required>
+                            <button type="submit">Sign In</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Popup for Register -->
+                <div id="registerPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close">&times;</span>
+                        <form id="registerForm">
+                            <h2>Register</h2>
+                            <input type="text" placeholder="Username" name="user" required>
+                            <input type="text" placeholder="Email" name="email" required>
+                            <input type="password" placeholder="Password" name="password" required>
+                            <button type="submit">Register</button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Settings and colour menu -->
+                <div class="settings-container">
+                    <button class="settings">⚙</button>
+                    <div id="colorMenu" style="display:none;">
+                        <p> Choose background color</p>
+
+                        <button id="standard" onclick="changeBackgroundColor('#40474f')">Standard</button>
+                        <button id="blue" onclick="changeBackgroundColor('#003268')">Dark Blue</button>
+                        <button id="green" onclick="changeBackgroundColor('#1E5531')">Green</button>
+                        <button id="violet" onclick="changeBackgroundColor('#36005A')">Violet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--Messages -->
+    <div id="message-bar" class="message-bar" style="display: none;">
+        <h1>Inbox</h1>
+    </div>
+
+    <!-- Followers -->
+    <div id="friends-bar" class="message-bar">
+        <h3>Following</h3>
+
+    </div>
+    <!-- Update Profile Div -->
+    <div id="updateProfilePopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <form id="updateProfileForm" method="POST" enctype="multipart/form-data">
+                <h2>Update Profile</h2>
+                <label for="bio">Bio (max 50 characters):</label>
+                <textarea id="bio" name="bio" placeholder="Tell us about yourself..." maxlength="50"
+                    oninput="validateLength('bio', 50)"></textarea>
+
+                <label for="ChessRating">Chess Rating:</label>
+                <input type="number" id="ChessRating" name="ChessRating" placeholder="Your FIDE rating:" min="1000"
+                    max="2800">
+
+                <label for="location">Location (max 30 characters):</label>
+                <textarea id="location" name="location" placeholder="Where are you located" maxlength="30"
+                    oninput="validateLength('location', 30)"></textarea>
+
+                <label for="profilePicture">Profile Picture:</label>
+                <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+
+                <button type="submit">Update Profile</button>
+            </form>
+        </div>
+    </div>
+    <!-- Feed Section -->
+    <section id="feed">
+        <div class="flex-container">
+            <h2>Chess Place</h2>
+            <!-- Creating posts -->
+            <div class="create-post-container">
+                <img src="" alt=" " id="userProfilePic" class="post-avatar">
+                <div class="post-input-container">
+                    <textarea placeholder="What's on your mind, kasparov?" class="post-input"
+                        id="createPost"></textarea>
+                    <!-- Input to upload image -->
+                    <input type="file" class="image-upload-btn" id="imageUpload" style="display: none;" />
+                    <!-- Label for the upload button so it can be styled -->
+                    <label for="imageUpload" class="image-label">
+                        <i class="fa-regular fa-file-image"></i> Upload Image
+                    </label>
+                    <span id="file-name-display" class="file-name-display"></span>
+                    <!-- Element to display the file name -->
+                    <button class="post-submit-btn">Create Post</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="feed-container">
+
+            <!-- Posts -->
+
+        </div>
+
+    </section>
+
+
+    <!-- Pop up for chess puzzles -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Chess Puzzles</p>
+            <div id="myBoard" style="width: 400px"></div>
+            <div id="solutionDiv">
+                <label for="userSolution">Solution:</label>
+                <textarea id="userSolution" name="solution" placeholder="Enter your solution" maxlength="5"></textarea>
+                <button id="checkSolutionButton">Check Solution</button>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- Javascript here due to chessboard.js requirements -->
+    <script>
+        $(function () {
+            let puzzleSolution = '';
+
+            function fetchPuzzle() {
+                fetch('/M00864763/getRandomPuzzle')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.fen) {
+                            var board = Chessboard('myBoard', data.fen);
+                            puzzleSolution = data.solution; // Store the solution
+                        } else {
+                            console.error('No FEN received:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching puzzle:', error));
+            }
+
+            // Initial fetch
+            fetchPuzzle();
+
+            //Solution check
+            $('#checkSolutionButton').on('click', function () {
+                const userSolution = $('#userSolution').val();
+                if (userSolution === puzzleSolution) {
+                    alert('Correct solution!');
+                    fetchPuzzle(); //New puzzle
+                } else {
+                    alert('Incorrect solution. Try again.');
+                }
+                $('#userSolution').val(''); // Clear input
+            });
+        });
+
+    </script>
+
+
+    <!-- Footer -->
+    <footer>
+        <a href="https://github.com/paknot" target="_blank">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            Github
+        </a>
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+            <i class="fa-brands fa-youtube"></i>
+            Youtube
+        </a>
+        <a href="https://www.chess.com" target="_blank">
+            <i class="fa-solid fa-chess"></i>
+            Chess.com
+        </a>
+        <a href="https://www.wikipedia.org/" target="_blank">
+            <i class="fa-brands fa-wikipedia-w"></i>
+            Wikipedia
+        </a>
+    </footer>
+</body>
+
+</html>
