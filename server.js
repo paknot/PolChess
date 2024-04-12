@@ -1,12 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
-import path from 'path';
 import express from 'express';
 import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import multer from 'multer';
 import { Binary } from 'mongodb';
 
@@ -46,38 +42,25 @@ async function connectToDatabase() {
 connectToDatabase();
 
 
-
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: uri }), // Use the same URI you use for MongoDB
-    cookie: { secure: !!(process.env.NODE_ENV === 'production'), maxAge: 24 * 60 * 60 * 1000 } // 24 hours
-}));
-
-
 app.use(express.json());
 
 app.use(session({
-    secret: 'your-secret-key', // Use a secret key for your sessions
+    secret: 'mySecret', 
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: !!(process.env.NODE_ENV === 'production') } // Use secure cookies in production
+    cookie: { secure: !!(process.env.NODE_ENV === 'production') } //Secure cookies in production
   }));
 
-// Main route
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
-// app.use(express.static(path.join(__dirname, '../')));
-// app.get('/M00864763/', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../public/index.html'));
-// }); // make it public
-
-app.use(express.static('public'));
+app.use("/M00864763", express.static('public'));
 
 //Register
 app.post('/M00864763/addUser', async (req, res) => {
     const { username, email, password } = req.body;
+
+    // Check if any of the required fields are missing
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: "Missing required fields. Please ensure username, email, and password are provided." });
+    }
 
     try {
         // Use a case-insensitive search to check if the username already exists
@@ -90,7 +73,7 @@ app.post('/M00864763/addUser', async (req, res) => {
         // If the username doesn't exist (considering case-insensitivity), proceed to insert the new user
         const result = await users.insertOne({ username, email, password });
         if (result.acknowledged) {
-            res.status(201).json({ id: result.insertedId, message: "Registration succesfull" });
+            res.status(201).json({ id: result.insertedId, message: "Registration successful" });
         } else {
             res.status(500).json({ message: "Failed to register the user" });
         }
@@ -106,17 +89,29 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 app.post('/M00864763/createPost', upload.single('image'), async (req, res) => {
+    //Must be logged in
     if (!req.session.user) {
         return res.status(401).json({ message: "You must be logged in to create a post." });
     }
 
+    //Get image and username
     const username = req.session.user;
     const { textContent } = req.body;
+
+    // Check if the textContent is provided
+    if (!textContent) {
+        return res.status(400).json({ message: "Missing text content. Please tell us something." });
+    }
+
+    //Image if any
     const imageBuffer = req.file ? req.file.buffer : null;
     const contentType = req.file ? req.file.mimetype : null;
 
     try {
+        //Content collection
         const contentCollection = database.collection("Content");
+
+        //Insert into database
         const result = await contentCollection.insertOne({
             username,
             textContent,
@@ -126,6 +121,7 @@ app.post('/M00864763/createPost', upload.single('image'), async (req, res) => {
             likeCount: 0,
         });
 
+        //Inform user
         if (result.acknowledged) {
             res.status(201).json({ message: "Post created successfully", postId: result.insertedId });
         } else {
@@ -137,14 +133,15 @@ app.post('/M00864763/createPost', upload.single('image'), async (req, res) => {
     }
 });
 
+
 //Get all posts
 app.get('/M00864763/getAllPosts', async (req, res) => {
     try {
         const contentCollection = database.collection("Content");
-        // Sort here to ensure newest posts come first, -1 for descending order
+        //Sorth posts,nwest first
         const posts = await contentCollection.find({}).sort({ createdAt: 1 }).toArray();
 
-        // Convert Binary data to Base64 and return posts
+        //Convert binary
         const postsWithImages = posts.map(post => {
             if (post.image) {
                 post.imageURL = `data:${post.contentType};base64,${post.image.buffer.toString('base64')}`;
@@ -160,14 +157,14 @@ app.get('/M00864763/getAllPosts', async (req, res) => {
 
 //Log in
 app.post('/M00864763/login', async (req, res) => {
-    const { user, password } = req.body; // Assuming 'user' is the field for username in your form
+    const { user, password } = req.body; 
 
     try {
         const userDocument = await users.findOne({ username: user });
 
         if (userDocument && userDocument.password === password) {
-            // Assuming passwords are stored in plain text for simplicity; in a real application, use hashed passwords
-            req.session.user = userDocument.username; // Start a session for the logged-in user
+            //Password still stored in a plain text
+            req.session.user = userDocument.username; 
             res.json({ loggedIn: true, username: userDocument.username });
         } else {
             res.status(401).json({ message: "Invalid username or password." });
@@ -206,7 +203,7 @@ app.post('/M00864763/updateProfile', profileUpload.single('profilePicture'), asy
     if (!req.session.user) {
         return res.status(401).json({ message: "You must be logged in to update your profile." });
     }
-
+    //Get the data from form
     const username = req.session.user;
     const { bio, ChessRating, location } = req.body;
     const profilePicture = req.file ? new Binary(req.file.buffer) : null;
@@ -228,7 +225,7 @@ app.post('/M00864763/updateProfile', profileUpload.single('profilePicture'), asy
     if (Object.keys(updateDoc.$set).length === 0) {
         return res.status(400).json({ message: "No valid fields provided for update." });
     }
-
+    //Update the same
     try {
         const result = await users.updateOne({ username }, updateDoc);
         if (result.modifiedCount === 0) {
@@ -290,8 +287,8 @@ app.post('/M00864763/followUser', async (req, res) => {
         return res.status(401).json({ message: "You must be logged in to follow a user." });
     }
 
-    const currentUser = req.session.user; // Username of the currently logged-in user
-    const { usernameToFollow } = req.body; // Username of the user to be followed
+    const currentUser = req.session.user; // Username logged in
+    const { usernameToFollow } = req.body; // Username user wahts to follow
 
     try {
         // Ensure the target user exists
@@ -362,6 +359,7 @@ app.get('/M00864763/getPostsByHashtag/:hashtag', async (req, res) => {
     }
 });
 
+// Send messgaes
 app.post('/M00864763/sendMessage', async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ message: "You must be logged in to send messages." });
@@ -370,7 +368,18 @@ app.post('/M00864763/sendMessage', async (req, res) => {
     const { receiver, content } = req.body;
     const sender = req.session.user;
 
+    // Check if content is not empty or just whitespace
+    if (!content.trim()) {
+        return res.status(400).json({ message: "Message content cannot be empty." });
+    }
+
     try {
+        // Check if receiver exists in the database
+        const receiverExists = await database.collection("Users").findOne({ username: receiver });
+        if (!receiverExists) {
+            return res.status(404).json({ message: "Receiver not found." });
+        }
+
         const result = await database.collection("Messages").insertOne({
             sender,
             receiver,
@@ -390,6 +399,7 @@ app.post('/M00864763/sendMessage', async (req, res) => {
     }
 });
 
+
 //Gets messages to display
 app.get('/M00864763/getMessages', async (req, res) => {
     if (!req.session.user) {
@@ -406,7 +416,7 @@ app.get('/M00864763/getMessages', async (req, res) => {
     }
 });
 
-// Inside your server.js or equivalent file
+// Mark messages as read
 
 app.post('/M00864763/markMessageAsRead', async (req, res) => {
     if (!req.session.user) {
@@ -435,8 +445,11 @@ app.post('/M00864763/markMessageAsRead', async (req, res) => {
         res.status(500).json({ message: "An error occurred", error: error.message });
     }
 });
+
+
+
 // Gets users profile picture
-  app.get('/M00864763/getUserProfilePicture/:username', async (req, res) => {
+app.get('/M00864763/getUserProfilePicture/:username', async (req, res) => {
     const username = req.params.username;
 
     try {
@@ -452,33 +465,7 @@ app.post('/M00864763/markMessageAsRead', async (req, res) => {
         res.status(500).json({ message: "An error occurred while fetching the profile picture", error: error.message });
     }
 });
-//Mark messages are read
-app.post('/M00864763/markMessageAsRead', async (req, res) => {
-    const { messageId } = req.body; // Get message ID from the request body
 
-    if (!req.session.user) {
-        return res.status(401).json({ message: "You must be logged in." });
-    }
-
-    try {
-        const result = await database.collection("Messages").updateOne(
-            { 
-                _id: new ObjectId(messageId),
-                receiverUsername: req.session.user // Ensuring that only the receiver can mark as read
-            },
-            { $set: { isRead: true } }
-        );
-
-        if (result.modifiedCount === 0) {
-            return res.status(404).json({ message: "Message not found or already marked as read." });
-        }
-
-        res.status(200).json({ message: "Message marked as read." });
-    } catch (error) {
-        console.error("Error marking message as read:", error);
-        res.status(500).json({ message: "An error occurred", error: error.message });
-    }
-});
 
 //Get puzzles and validate them
 app.get('/M00864763/getRandomPuzzle', async (req, res) => {
@@ -502,11 +489,34 @@ app.get('/M00864763/getRandomPuzzle', async (req, res) => {
         res.status(500).json({ message: "An error occurred while fetching a random puzzle", error: error.message });
     }
 });
-
-
+// Like the post
+app.post('/M00864763/likePost', async (req, res) => {
+    const { postId } = req.body;
+    
+    //Check if logged in
+    if (!req.session.user) {
+        return res.status(401).json({ message: "You must be logged in to like a post." });
+    }
+    
+    try {
+        const contentCollection = database.collection("Content");
+        //Increment count if possible
+        const result = await contentCollection.updateOne(
+            { _id: new ObjectId(postId) },
+            { $inc: { likeCount: 1 } }
+        );
+        //Was post found and updated
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: "Post not found or already liked." });
+        }
+        res.status(200).json({ message: "Post liked successfully." });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred while liking the post", error: error.message });
+    }
+});
 
 // Start the server
 app.listen(port, () => {
     console.log(uri);
-    console.log('Server running on http://localhost:8080/index.html');
+    console.log('Server running on http://localhost:8080/M00864763/index.html');
 });

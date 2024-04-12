@@ -6,9 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Polchess</title>
     <meta name="description" content="chess site">
-    <link rel="stylesheet" href="/style.css">
-    <script src="/front.js"></script>
-    <link rel="icon" href="/images/polchess.png" type="image/icon type">
+    <link rel="stylesheet" type="text/css" href="/M00864763/style.css">
+    <script src="/M00864763/front.js"></script>
+
+    <link rel="icon" href="/M00864763/images/polchess.png" type="image/icon">
     <!--For icons-->
     <script src="https://kit.fontawesome.com/eceeda5593.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -33,7 +34,7 @@
             <div class="logo-container">
                 <!-- Home link -->
                 <a id="home">
-                    <img src="/images/polchessBG.png" alt="PolChess Icon" class="logo">
+                    <img src="/M00864763/images/polchessBG.png" alt="PolChess Icon" class="logo">
                     <h1 class="logo-text">olChess</h1>
                 </a>
                 <!-- Subclasses -->
@@ -168,12 +169,12 @@
             <h2>Chess Place</h2>
             <!-- Creating posts -->
             <div class="create-post-container">
-                <img src="" alt=" " id="userProfilePic" class="post-avatar">
+                <img src="images/blank.png" alt=" " id="userProfilePic" class="post-avatar">
                 <div class="post-input-container">
                     <textarea placeholder="What's on your mind, kasparov?" class="post-input"
                         id="createPost"></textarea>
                     <!-- Input to upload image -->
-                    <input type="file" class="image-upload-btn" id="imageUpload" style="display: none;" />
+                    <input type="file" class="image-upload-btn" id="imageUpload" style="display: none;">
                     <!-- Label for the upload button so it can be styled -->
                     <label for="imageUpload" class="image-label">
                         <i class="fa-regular fa-file-image"></i> Upload Image
@@ -211,7 +212,7 @@
         </div>
 
     </div>
-    
+
     <!-- Javascript here due to chessboard.js requirements -->
     <script>
         $(function () {

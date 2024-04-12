@@ -85,7 +85,7 @@ document.addEventListener('click', function (event) {
 //Setting the search up
 function setupSearch() {
   const searchInput = document.getElementById('searchInput');
-  const searchButton = document.getElementById('searchButton');
+
   if (searchInput) {
     searchInput.addEventListener('keypress', function (event) {
       if (event.key === 'Enter') {
@@ -116,27 +116,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   });
 });
 
-
-//Slides comment bar
-function toggleCommentInput(commentButton) {
-
-  let postArticle = commentButton.closest('article');
-
-  let commentContainer = postArticle.querySelector('.comments-container');
-
-  commentContainer.style.display = commentContainer.style.display === 'block' ? 'none' : 'block';
-}
-// Event listener for all comments
-document.addEventListener('DOMContentLoaded', function () {
-
-  let commentButtons = document.querySelectorAll('.commentBTN');
-
-  commentButtons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      toggleCommentInput(this);
-    });
-  });
-});
 
 // Refreshes a page
 function refreshPage() {
@@ -183,24 +162,31 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault(); //no empty submissions
 
       const formData = new FormData(registerForm);
-      const email = formData.get('email'); // User input for email
-      const password = formData.get('password'); // User input for password
+      const email = formData.get('email');
+      const password = formData.get('password');
+      const username = formData.get('user');
 
       // Validate email
       if (!isValidEmail(email)) {
         alert('Please enter a valid email address (e.g., user@user.com).');
-        return; // Stop the form submission
+        return; // stop submission
       }
 
       // Validate password
       if (!isValidPassword(password)) {
         alert('Password must be at least 8 characters long and include both letters and numbers.');
-        return; // Stop the form submission
+        return; // Stop submission
+      }
+
+      // Validate username for special characters
+      if (!isValidUsername(username)) {
+        alert('Username must contain only alphanumeric characters.');
+        return; // Stop submission
       }
 
       const userData = {
-        username: formData.get('user'), // User input for username
-        email: formData.get('email'), // User input for email
+        username: username,
+        email: email,
         password: password
       };
 
@@ -232,15 +218,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+//Username is only letters and 
+function isValidUsername(username) {
+  return /^[a-zA-Z0-9]+$/.test(username);
+}
+
 //Valid password (letters and numbers)
 function isValidPassword(password) {
   return /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password);
 }
+
 //Valid email
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Add posts to feed
 async function appendPostToFeed(postData) {
   const feedContainer = document.querySelector('.feed-container');
   const postElement = document.createElement('div');
@@ -259,7 +253,7 @@ async function appendPostToFeed(postData) {
   }
 
   const timeAgo = timeSince(postData.createdAt); // Calculate time since post was created
-
+  //Dynamicly display posts
   postElement.innerHTML = `
     <article class="post">
       <div class="post-header">
@@ -274,8 +268,8 @@ async function appendPostToFeed(postData) {
         ${postData.imageURL ? `<img src="${postData.imageURL}" alt="Post Image" class="post-image">` : ''}
       </div>
       <div class="post-actions">
-        <button class="likeBTN">
-          <i class="fa fa-heart"></i> Like
+        <button class="likeBTN" data-post-id="${postData._id}">
+          <i class="fa fa-heart"></i> Like <span class="like-count">${postData.likeCount}</span>
         </button>
         <button class="commentBTN">
           <i class="fa fa-comment"></i> Comment
@@ -284,9 +278,37 @@ async function appendPostToFeed(postData) {
     </article>
   `;
 
-  // Insert the new post element at the beginning of the feed container
   feedContainer.appendChild(postElement);
+
+  //Listen for like button clicks
+  const likeButton = postElement.querySelector('.likeBTN');
+  likeButton.addEventListener('click', async function(event) {
+    const postId = this.dataset.postId;
+    try {
+      const response = await fetch('/M00864763/likePost', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postId }),
+        credentials: 'include' // Include cookies
+      });
+      if (response.ok) {
+        const likeCountSpan = this.querySelector('.like-count');
+        likeCountSpan.textContent = parseInt(likeCountSpan.textContent) + 1;
+      } else if (response.status === 401) {
+        //Must be logged in
+        alert('You must be logged in to like a post.');
+      } else {
+        throw new Error('Failed to like the post.');
+      }
+    } catch (error) {
+      console.error('Error liking the post:', error);
+    }
+  });
 }
+
+
 
 
 //Login in
@@ -310,9 +332,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
       if (response.ok) {
         const result = await response.json();
         if (result.loggedIn) {
-          // Update the UI to reflect the logged-in state
+          // Update UI
           document.querySelector('.logReg').innerHTML = `<button class="signBTN">${result.username}</button>`;
-          // Optionally close the signInPopup
+          //close pop up
           document.getElementById('signInPopup').style.display = 'none';
           alert(`Login successful. Welcome back, ${result.username}!`);
           // Refresh page
@@ -328,10 +350,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   });
 });
-// Display posts
+//Get and display posts
 async function fetchAndDisplayPosts() {
   try {
-    const response = await fetch('/M00864763/getAllPosts');
+    const response = await fetch('/M00864763/getAllPosts', {
+      credentials: 'include' // Include session cookies with the request
+    });
     if (!response.ok) {
       throw new Error(`Network response was not ok (${response.status})`);
     }
@@ -344,15 +368,15 @@ async function fetchAndDisplayPosts() {
     const feedContainer = document.querySelector('.feed-container');
     feedContainer.innerHTML = '';
 
-    // Use for...of loop to await each appendPostToFeed function call
+    // Use for...of loop to append each post to the feed
     for (const post of posts) {
-      await appendPostToFeed(post);
+      await appendPostToFeed(post, feedContainer);
     }
   } catch (error) {
     console.error('Error fetching or displaying posts:', error);
   }
 }
-
+// Listem for username hovers or clicks
 document.addEventListener('DOMContentLoaded', () => {
   fetchAndDisplayPosts().then(() => {
 
@@ -412,6 +436,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   });
 });
+
+// Show uploaded file name
 document.addEventListener('DOMContentLoaded', (event) => {
   const imageInput = document.getElementById('imageUpload');
   const fileNameDisplay = document.getElementById('file-name-display'); // The element where the file name will be displayed
@@ -436,7 +462,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (result.loggedIn) {
         // User is logged in, adjust UI accordingly
         document.querySelector('.logReg').innerHTML = `<button class="signBTN">${result.username}</button>`;
-        // If you have a greeting placeholder or want to update the post input placeholder:
         document.querySelector('.post-input').placeholder = `What's on your mind, ${result.username}?`;
       }
     }
@@ -453,7 +478,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (response.ok) {
       const result = await response.json();
       if (result.loggedIn) {
-        // Update the UI to reflect the logged-in state
+        //UI update
         document.querySelector('.logReg').innerHTML = `
             <button class="signBTN">${result.username} &#x25BC;</button>
             <div id="dropdownMenu" class="dropdown-content" style="display:none;">
@@ -475,7 +500,6 @@ function setupDropdown() {
   const usernameButton = document.querySelector('.signBTN');
   const dropdownMenu = document.getElementById('dropdownMenu');
 
-  // Simply attach the event listeners, no need to remove them.
   if (usernameButton && dropdownMenu) {
     usernameButton.addEventListener('click', () => {
       // Toggle the dropdown menu
@@ -497,7 +521,7 @@ function setupDropdown() {
         try {
           const logoutResponse = await fetch('/M00864763/logout', { method: 'POST', credentials: 'include' });
           if (logoutResponse.ok) {
-            window.location.reload(); // Reload the page to update the UI
+            window.location.reload(); //Reload page
           }
         } catch (logoutError) {
           console.error('Logout failed:', logoutError);
@@ -544,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Handle the ChessRating separately to enforce number validation
+      //ChessRating that exists
       const chessRatingValue = chessRating.value;
       if (chessRatingValue && !isNaN(chessRatingValue) && chessRatingValue >= 1000 && chessRatingValue <= 2800) {
         cleanFormData.append('ChessRating', chessRatingValue);
@@ -560,17 +584,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch('/M00864763/updateProfile', {
           method: 'POST',
           body: cleanFormData, // Use the cleaned FormData
-          credentials: 'include' // Include cookies for session management
+          credentials: 'include'
         });
 
         if (response.ok) {
           const result = await response.json();
-          alert(result.message); // Show success message
+          alert(result.message); //Success message
           document.getElementById('updateProfilePopup').style.display = 'none'; // Close the popup
-          updateProfileForm.reset(); // Optionally, reset the form fields
+          updateProfileForm.reset();
         } else {
           const error = await response.json();
-          alert(error.message); // Show error message from the server
+          alert(error.message);
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -585,6 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+//Check lenght( field, max number of chars)
 function validateLength(fieldId, maxLength) {
   const field = document.getElementById(fieldId);
   if (field.value.length > maxLength) {
@@ -592,7 +617,7 @@ function validateLength(fieldId, maxLength) {
     field.value = field.value.substring(0, maxLength); // Trim the value to the maximum length
   }
 }
-
+// Get and display friend list
 async function fetchAndDisplayFriends() {
   try {
     const response = await fetch('/M00864763/friends', { credentials: 'include' });
@@ -611,11 +636,11 @@ async function fetchAndDisplayFriends() {
         const friendElement = document.createElement('div');
         friendElement.className = 'friend';
         friendElement.textContent = friendUsername;
-        friendElement.style.marginBottom = '8px'; // Adds space between friend names
+        friendElement.style.marginBottom = '8px';
 
-        // Add click event listener to friend element
-        friendElement.addEventListener('click', function() {
-          performUserSearch(friendUsername); // Calls function to search for and display the friend's posts
+
+        friendElement.addEventListener('click', function () {
+          performUserSearch(friendUsername); //See their posts
         });
 
         friendsContainer.appendChild(friendElement);
@@ -627,9 +652,6 @@ async function fetchAndDisplayFriends() {
     console.error('Error:', error);
   }
 }
-
-
-
 
 // Toggle friends list and fetch friends when the  friends button is clicked
 document.addEventListener('DOMContentLoaded', function () {
@@ -645,7 +667,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (friendsBtn) {
     friendsBtn.addEventListener('click', function () {
       fetchAndDisplayFriends(); // Fetch and display friends
-      toggleFriendsList()
+      toggleFriendsList();
     });
   }
 });
@@ -657,10 +679,10 @@ async function fetchUserInfo(username) {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    return await response.json(); // This should return an object with bio, location, and chessRating
+    return await response.json(); //Return bio, location and chessRating
   } catch (error) {
     console.error('Error:', error);
-    return null; // return null if there was an error
+    return null;
   }
 }
 
@@ -669,13 +691,13 @@ function setupUsernameHover() {
   document.addEventListener('mouseover', async (event) => {
     const username = event.target.closest('.username');
     if (username) {
-      // Show a loading message or placeholder immediately
+      //Placeholders till info is there
       displayUserInfoBox({ bio: 'Loading...', location: 'Loading...', ChessRating: 'Loading...' }, username);
 
       // Fetch user info asynchronously
       const userInfo = await fetchUserInfo(username.textContent);
       if (userInfo) {
-        // Update the box with the fetched data
+        // Update box with data
         displayUserInfoBox(userInfo, username);
       } else {
         console.log(`No user info found for ${username.textContent}`);
@@ -699,6 +721,7 @@ function displayUserInfoBox(userInfo, targetElement) {
   // Store the receiver's username in a data attribute
   userInfoBox.setAttribute('data-username', targetElement.textContent);
 
+  //HTML for box
   userInfoBox.innerHTML = `
     <button id="follow">Follow</button>
     <p><strong>Bio:</strong> ${userInfo.bio}</p>
@@ -724,13 +747,13 @@ function displayUserInfoBox(userInfo, targetElement) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ usernameToFollow }),
-        credentials: 'include' // Important for including cookies in the request
+        credentials: 'include'
       });
       if (!response.ok) {
         throw new Error('Failed to follow user');
       }
       const result = await response.json();
-      alert(result.message); // Display the result message
+      alert(result.message);
     } catch (error) {
       console.error('Error:', error);
       alert('Error following user.');
@@ -739,16 +762,16 @@ function displayUserInfoBox(userInfo, targetElement) {
     const sendMessageButton = userInfoBox.querySelector('#send-message');
     const messageInput = userInfoBox.querySelector('#message-input');
 
-    // Define the event listener for the send button
+    //Send message listener
     sendMessageButton.addEventListener('click', function () {
       const messageContent = messageInput.value.trim();
       if (messageContent) {
-        // Assume the sender is the current session user and the receiver is being viewed
-        const sender = 'currentUserUsername'; // This should be dynamically set based on the logged-in user
+
+        const sender = 'currentUserUsername';
         const receiver = targetElement.textContent.trim();
 
         sendMessage(sender, receiver, messageContent);
-        messageInput.value = ''; // Optionally clear the message input after sending
+        messageInput.value = ''; //Clear input after sending
       } else {
         alert('Please enter a message to send.');
       }
@@ -764,6 +787,7 @@ function setupDocumentClickListener() {
     }
   });
 }
+
 setupDocumentClickListener();
 
 // Function to setup username click event listeners
@@ -790,8 +814,9 @@ async function performUserSearch(input) {
   }
 
   let url;
+  // If hashtag
   if (input.startsWith('#')) {
-    // Remove '#' from the start and encode any special characters for the URL
+
     const hashtag = encodeURIComponent(input.slice(1));
     url = `/M00864763/getPostsByHashtag/${hashtag}`;
   } else {
@@ -821,13 +846,13 @@ async function performUserSearch(input) {
     alert('An error occurred while searching: ' + error);
   }
 }
-
+// Send messages
 function sendMessage(sender, receiver, messageContent) {
   const messageData = {
     sender: sender,
     receiver: receiver,
     content: messageContent,
-    createdAt: new Date() // Set the current time
+    createdAt: new Date()
   };
 
   fetch('/M00864763/sendMessage', {
@@ -846,7 +871,7 @@ function sendMessage(sender, receiver, messageContent) {
       console.error('Error:', error);
     });
 }
-
+//listen for sending messages
 document.addEventListener('click', function (event) {
   if (event.target && event.target.id === 'send-message') {
     const userInfoBox = event.target.closest('#user-info-box');
@@ -865,29 +890,30 @@ document.addEventListener('click', function (event) {
   }
 });
 
+//Open message bar
 document.addEventListener('DOMContentLoaded', () => {
   const messagesIcon = document.getElementById('messages');
   const messageBar = document.getElementById('message-bar');
 
   messagesIcon.addEventListener('click', async function () {
     const messages = await fetchMessages();
-    // Clear the messageBar before displaying new messages or info
+    //Clear message bar if no messages
     messageBar.innerHTML = '';
-    
+
     if (messages && messages.length > 0) {
       displayMessages(messages, messageBar);
     } else {
-      // Now, this will ensure "No messages found." is added only once
+
       messageBar.innerHTML = '<p>No messages found.</p>';
     }
     messageBar.style.display = 'block';
   });
 });
-
+//Get messages
 async function fetchMessages() {
   try {
     const response = await fetch('/M00864763/getMessages', {
-      credentials: 'include' // Important for session-based authentication
+      credentials: 'include'
     });
     if (response.ok) {
       return await response.json();
@@ -898,12 +924,13 @@ async function fetchMessages() {
     alert('Failed to load messages. Please try again.');
   }
 }
-
+//Show messages
 function displayMessages(messages, container) {
-  container.innerHTML = '<h1>Inbox</h1>'; // Reset container and add title
+  container.innerHTML = '<h1>Inbox</h1>'; //If there are any messgaes
   messages.forEach(message => {
     const messageElement = document.createElement('div');
     messageElement.className = 'message';
+    // Message html
     messageElement.innerHTML = `
       <p><strong>From:</strong> ${message.sender}</p>
       <p><strong>Message:</strong> ${message.content}</p>
@@ -912,13 +939,13 @@ function displayMessages(messages, container) {
     `;
     container.appendChild(messageElement);
 
-    // Find the newly added button within messageElement and add click event
+
     const markReadButton = messageElement.querySelector('.mark-read');
     markReadButton.addEventListener('click', () => markMessageAsRead(message._id, messageElement));
   });
 }
 
-// The markMessageAsRead function
+//Mark messages as read function
 async function markMessageAsRead(messageId, messageElement) {
   try {
     const response = await fetch('/M00864763/markMessageAsRead', {
@@ -927,12 +954,12 @@ async function markMessageAsRead(messageId, messageElement) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ messageId }),
-      credentials: 'include', // For session-based authentication
+      credentials: 'include',
     });
 
     if (response.ok) {
       console.log('Message marked as read');
-      // Remove the message element from the DOM
+
       messageElement.remove();
     } else {
       throw new Error('Failed to mark the message as read');
@@ -941,7 +968,7 @@ async function markMessageAsRead(messageId, messageElement) {
     console.error('Error marking message as read:', error);
   }
 }
-
+// Get and Display user profile picture
 function fetchAndDisplayUserProfilePicture(username) {
   const imageUrl = `/M00864763/getUserProfilePicture/${username}`;
 
@@ -963,15 +990,15 @@ function fetchAndDisplayUserProfilePicture(username) {
       console.error('Error fetching profile picture:', error);
     });
 }
-
+//If logged in show their profile picture
 document.addEventListener('DOMContentLoaded', async () => {
-  // Check if user is logged in and fetch the profile picture
+  //Check if user is logged in
   try {
     const loginCheckResponse = await fetch('/M00864763/checkLogin', { credentials: 'include' });
     if (loginCheckResponse.ok) {
       const loginCheckResult = await loginCheckResponse.json();
       if (loginCheckResult.loggedIn) {
-        // User is logged in, now fetch their profile picture
+        // Userlogged in, now fetch their profile picture
         const profilePicResponse = await fetch(`/M00864763/getUserProfilePicture/${loginCheckResult.username}`);
         if (profilePicResponse.ok) {
           const profilePicBlob = await profilePicResponse.blob();
@@ -986,6 +1013,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+// Calculate the time since the post was made
 function timeSince(date) {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
   let interval = seconds / 31536000;
@@ -1011,28 +1039,31 @@ function timeSince(date) {
   }
   return Math.floor(seconds) + "s";
 }
+// Display the chess puzzle modal
 document.addEventListener('DOMContentLoaded', (event) => {
   let modal = document.getElementById("myModal");
   let btn = document.getElementById("puzzles");
-  var span = document.getElementsByClassName("close")[0];
+  let span = document.getElementsByClassName("close")[0];
 
-  if (btn) { // Check if btn is not null
-      btn.onclick = function () {
-          modal.style.display = "block";
-      }
+  // Check if button exists
+  if (btn) {
+    btn.onclick = function () {
+      modal.style.display = "block";
+    }
   } else {
-      console.error("Button with id 'puzzles' not found.");
+    console.error("Button with id 'puzzles' not found.");
   }
 
   span.onclick = function () {
-      modal.style.display = "none";
+    modal.style.display = "none";
   }
 
   window.onclick = function (event) {
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
   }
 });
+
 
 
